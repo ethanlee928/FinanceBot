@@ -3,10 +3,9 @@ services:
   mosquitto:
     image: eclipse-mosquitto
     hostname: mosquitto
-    container_name: mqtt-broker
+    container_name: financebot-broker
     ports:
-      - 1883:1883
-      - 9001:9001
+      - ${MQTT_PORT}:1883
     volumes:
       - ./mqtt/:/mosquitto/
 
@@ -14,10 +13,10 @@ services:
     container_name: polygonbot
     hostname: polygonbot
     ports:
-      - 5002:5002
+      - ${POLYGONBOT_PORT}:${POLYGONBOT_PORT}
 
   slackbot:
     container_name: slackbot
     hostname: slackbot
     ports:
-      - 5001:5001
+      - ${SLACKBOT_PORT}:${SLACKBOT_PORT}
