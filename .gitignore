@@ -1,0 +1,8 @@
+.env
+data/
+log/
+__pycache__
+*venv
+password.txt
+.DS_Store
+*.png

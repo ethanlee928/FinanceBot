@@ -1,0 +1,23 @@
+version: "3.9"
+services:
+  mosquitto:
+    image: eclipse-mosquitto
+    hostname: mosquitto
+    container_name: mqtt-broker
+    ports:
+      - 1883:1883
+      - 9001:9001
+    volumes:
+      - ./mqtt/:/mosquitto/
+
+  polygonbot:
+    container_name: polygonbot
+    hostname: polygonbot
+    ports:
+      - 5002:5002
+
+  slackbot:
+    container_name: slackbot
+    hostname: slackbot
+    ports:
+      - 5001:5001

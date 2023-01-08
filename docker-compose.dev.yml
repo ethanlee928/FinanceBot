@@ -1,0 +1,27 @@
+version: "3.9"
+services:
+  polygonbot:
+    image: polygonbot
+    build:
+      context: ./polygon
+      dockerfile: Dockerfile
+    working_dir: /app
+    volumes:
+      - ./polygon:/app/
+      - ./utils/:/app/utils:ro
+    env_file:
+      - ./polygon/.env
+    command: tail -f /dev/null
+
+  slackbot:
+    image: slackbot
+    build:
+      context: ./slack
+      dockerfile: Dockerfile
+    working_dir: /app
+    volumes:
+      - ./slack:/app/
+      - ./utils/:/app/utils:ro
+    env_file:
+      - ./slack/.env
+    command: tail -f /dev/null
