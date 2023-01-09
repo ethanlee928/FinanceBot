@@ -10,13 +10,13 @@ services:
       - ./mqtt/:/mosquitto/
 
   polygonbot:
-    container_name: polygonbot
+    container_name: financebot-polygonbot
     hostname: polygonbot
     ports:
       - ${POLYGONBOT_PORT}:${POLYGONBOT_PORT}
 
   slackbot:
-    container_name: slackbot
+    container_name: financebot-slackbot
     hostname: slackbot
     ports:
       - ${SLACKBOT_PORT}:${SLACKBOT_PORT}
