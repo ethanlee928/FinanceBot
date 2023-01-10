@@ -49,6 +49,11 @@ class CommandHandler(MQTTMessageHandler, ABC):
         future = self.executor.submit(self.on_command, command)
         future.add_done_callback(self._callback)
 
+    @override
+    def on_terminate(self):
+        logger.warning("Terminating command handler...")
+        self.executor.shutdown()
+
     @abstractmethod
     def on_command(self, command: Command):
         pass

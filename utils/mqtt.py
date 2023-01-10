@@ -24,6 +24,9 @@ class MQTTMessageHandler(ABC):
     def on_MQTTMessage(self, mqtt_message: MQTTMessage):
         pass
 
+    def on_terminate(self):
+        pass
+
 
 Handlers: TypeAlias = List[MQTTMessageHandler]
 
@@ -36,6 +39,7 @@ class MQTTClient(ABC):
 
         self.client = mqtt.Client(client_id=client_id)
         self.client.on_connect = self.on_connect
+        self.client.on_disconnect = self.on_disconnect
         self.client.username_pw_set(broker.username, broker.password)
         self.client.connect(broker.host, broker.port)
 
@@ -45,8 +49,15 @@ class MQTTClient(ABC):
         else:
             self.logger.error("Failed to connect, return code %d\n", rc)
 
+    def on_disconnect(self, client, userdata, rc):
+        self.logger.info(f"Disconnected MQTT Broker with result code {rc}")
+
     @abstractmethod
     def start(self):
+        pass
+
+    @abstractmethod
+    def stop(self):
         pass
 
 
@@ -61,6 +72,11 @@ class Subscriber(MQTTClient):
         self.client.subscribe(self.topic)
         self.client.on_message = self.on_message
         self.client.loop_forever()
+
+    @overrides
+    def stop(self):
+        self.client.disconnect()
+        self.client.loop_stop()
 
     def on_message(self, client, udata, msg):
         mqtt_msg = MQTTMessage(topic=self.topic, payload=msg.payload)
@@ -82,6 +98,11 @@ class Publisher(MQTTClient):
     @overrides
     def start(self):
         self.client.loop_start()
+
+    @overrides
+    def stop(self):
+        self.client.disconnect()
+        self.client.loop_stop()
 
     def publish(self, message: MQTTMessage) -> None:
         result = self.client.publish(message.topic, message.payload)
