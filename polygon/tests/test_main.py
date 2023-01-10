@@ -27,3 +27,6 @@ class TestMain(unittest.TestCase):
         mq_msg = MQTTMessage(topic="pair", payload=cmd.to_payload())
         self.publisher.publish(mq_msg)
         self.assertIsInstance(cmd, Command)
+
+    def tearDown(self) -> None:
+        self.publisher.stop()
