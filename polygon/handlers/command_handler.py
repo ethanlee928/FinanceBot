@@ -17,11 +17,9 @@ class PolygonBotHandler(CommandHandler):
     def on_command(self, command: Command):
         try:
             if command._id == Command.ID.PING:
-                self._on_ping(command)
-            elif command._id == Command.ID.CHART:
-                self._on_chart(command)
-            else:
-                logger.warning(f"{command._id} is not implemented")
+                return self._on_ping(command)
+            if command._id == Command.ID.CHART:
+                return self._on_chart(command)
         except PolygonExceptions.BadResponse:
             error_msg = ":warning: Rate limit: 5 API Calls / Minute"
             return self.slack_client.send_message(command.channel_id, error_msg)
