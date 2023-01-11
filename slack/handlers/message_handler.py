@@ -31,9 +31,9 @@ class MessageHandler(EventHandler):
         command = msg_seg[0].lower()
         if command == "help":
             return self._on_help(channel)
-        if command == Command.ID.PING:
+        if command == Command.ID.PING.value:
             return self._on_ping(channel)
-        if command == Command.ID.CHART:
+        if command == Command.ID.CHART.value:
             return self._on_chart(channel, msg_seg)
         self.logger.warning(f"Command {command} not recognized")
 
@@ -72,7 +72,7 @@ class MessageHandler(EventHandler):
             return
         from_ = message_seg[4]
         if len(message_seg) == 5:
-            to_ = TimeStamp.get_ts_now(TimeStamp.DEFAULT)
+            to_ = TimeStamp.get_ts_now(TimeStamp.DATE)
         else:
             to_ = message_seg[5]
         cmd = Command(
