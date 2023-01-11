@@ -3,8 +3,8 @@ from typing import List
 from overrides import override
 
 from utils import get_logger, Publisher, Command, MQTTMessage, TimeStamp
-from events import EventHandler, Event
-from clients import SlackClient
+from .events import EventHandler, Event
+from .clients import SlackClient
 
 
 class MessageHandler(EventHandler):
@@ -21,6 +21,11 @@ class MessageHandler(EventHandler):
             return
         return self.on_message(event.channel, event.text)
 
+    @override
+    def on_terminate(self):
+        self.logger.warning("Terminating MessageHandler...")
+        self.publisher.stop()
+
     def on_message(self, channel: str, message: str):
         msg_seg = message.strip().split()
         command = msg_seg[0].lower()
@@ -36,7 +41,7 @@ class MessageHandler(EventHandler):
         message = (
             "Available commands:\n"
             + "1. ping\n"
-            + "2. chart ticker multiplier timespan start_time end_time(optional)\n"
+            + "2. chart ticker multiplier timespan start_time end_time (optional)\n"
         )
         res = self.slack_client.send_message(channel, message)
         self.logger.info(f"Help message response: {res}")

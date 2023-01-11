@@ -7,3 +7,6 @@ class EventHandler(ABC):
     @abstractmethod
     def on_event(self, event: Event):
         ...
+
+    def on_terminate(self):
+        ...
