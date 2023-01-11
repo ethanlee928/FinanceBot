@@ -1,10 +1,10 @@
 FROM python:3.11
 
-ARG GROUP_ID=1000
-ARG USER_ID=1000
-ARG USERNAME=polygon
+ARG GROUP_ID
+ARG USER_ID
+ARG USERNAME
 
-RUN addgroup --gid ${GROUP_ID} ${USERNAME} \
+RUN getent group ${GROUP_ID} || addgroup --gid ${GROUP_ID} ${USERNAME} \
     && adduser --disabled-password --gecos "" --uid ${USER_ID} --gid ${GROUP_ID} ${USERNAME}\
     && passwd -d ${USERNAME}
 
