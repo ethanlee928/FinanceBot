@@ -1,7 +1,7 @@
 version: "3.9"
 services:
   polygonbot:
-    image: polygonbot
+    image: financebot-polygonbot
     build:
       context: ./polygon
       dockerfile: Dockerfile
@@ -14,7 +14,7 @@ services:
     command: tail -f /dev/null
 
   slackbot:
-    image: slackbot
+    image: financebot-slackbot
     build:
       context: ./slack
       dockerfile: Dockerfile
