@@ -107,6 +107,6 @@ class Publisher(MQTTClient):
     def publish(self, message: MQTTMessage) -> None:
         result = self.client.publish(message.topic, message.payload)
         if result[0] == 0:
-            self.logger.debug(f"Send {message.payload} to topic {message.topic}")
+            self.logger.info(f"Send {message.payload} to topic {message.topic}")
         else:
             self.logger.error(f"Failed to send message to topic {message.topic}")

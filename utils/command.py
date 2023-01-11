@@ -1,5 +1,5 @@
 from __future__ import annotations
-from enum import IntEnum
+from enum import Enum
 from typing import Dict, Any, TypeAlias
 import pickle
 from abc import ABC, abstractmethod
@@ -20,10 +20,9 @@ class Command:
         2. chart (coinpair) (interval) (start time)
     """
 
-    class ID(IntEnum):
-        _BASE = 100
-        PING = _BASE + 1
-        CHART = _BASE + 2
+    class ID(Enum):
+        PING = "ping"
+        CHART = "chart"
 
     def __init__(self, _id: ID, channel_id: str, body: CommandBody) -> None:
         self._id = _id
