@@ -1,4 +1,5 @@
 import os
+import json
 
 from overrides import override
 
@@ -20,10 +21,14 @@ class PolygonBotHandler(CommandHandler):
                 return self._on_ping(command)
             if command._id == Command.ID.CHART:
                 return self._on_chart(command)
-        except PolygonExceptions.BadResponse:
-            error_msg = ":warning: Rate limit: 5 API Calls / Minute"
+        except PolygonExceptions.BadResponse as err:
+            logger.exception(err)
+            resp_data, *_ = err.args
+            resp_dict = json.loads(resp_data)
+            error_msg = ":warning: " + resp_dict["error"]
             return self.slack_client.send_message(command.channel_id, error_msg)
-        except PolygonExceptions.NoResultsError:
+        except PolygonExceptions.NoResultsError as err:
+            logger.exception(err)
             error_msg = ":warning: No results for the request"
             return self.slack_client.send_message(command.channel_id, error_msg)
 
