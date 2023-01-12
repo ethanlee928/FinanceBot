@@ -21,6 +21,7 @@ RUN TZ=Asia/Hong_Kong \
 # Build context should be root directory
 COPY ./polygon /polygon
 COPY ./utils /polygon/utils/
+RUN mkdir /data/ && chown ${USERNAME}: /data/
 
 WORKDIR /polygon/
 USER ${USERNAME}
