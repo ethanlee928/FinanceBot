@@ -19,7 +19,7 @@ RUN TZ=Asia/Hong_Kong \
     && dpkg-reconfigure -f noninteractive tzdata 
 
 # Build context should be root directory
-COPY ./binance /binance
-COPY ./utils /binance/utils/
+COPY ./polygon /polygon
+COPY ./utils /polygon/utils/
 
 USER ${USERNAME}
