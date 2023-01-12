@@ -40,7 +40,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser("PolygonBot arguments")
     parser.add_argument("--topic", type=str, default="pair")
     parser.add_argument("--client-id", type=str, default="polygonbot")
-    parser.add_argument("--data-dir", type=str, default="./data/")
+    parser.add_argument("--data-dir", type=str, default="/data/")
 
     args = parser.parse_args()
     try:
