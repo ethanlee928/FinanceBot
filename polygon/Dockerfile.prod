@@ -22,4 +22,7 @@ RUN TZ=Asia/Hong_Kong \
 COPY ./polygon /polygon
 COPY ./utils /polygon/utils/
 
+WORKDIR /polygon/
 USER ${USERNAME}
+
+CMD [ "python3", "-u", "main.py" ]

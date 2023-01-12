@@ -23,4 +23,6 @@ COPY ./slack /slack
 COPY ./utils /slack/utils/
 
 WORKDIR /slack/
+USER ${USERNAME}
+
 CMD [ "python3", "-u", "main.py" ]
