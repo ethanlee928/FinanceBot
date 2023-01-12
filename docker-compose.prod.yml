@@ -12,7 +12,7 @@ services:
     image: financebot-polygonbot:${RELEASE_VERSION}
     restart: always
     env_file:
-      - .env
+      - ./polygon/.env
     logging:
       driver: "json-file"
       options:
@@ -23,7 +23,7 @@ services:
     image: financebot-slackbot:${RELEASE_VERSION}
     restart: always
     env_file:
-      - .env
+      - ./slack/.env
     logging:
       driver: "json-file"
       options:
