@@ -30,7 +30,8 @@ def main(_args):
     except KeyboardInterrupt:
         logger.warning("Terminating application...")
         app.terminate()
-
+    except Exception as err:
+        logger.exception(err)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser("PolygonBot arguments")

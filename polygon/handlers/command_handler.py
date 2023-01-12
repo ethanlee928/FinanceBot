@@ -16,6 +16,7 @@ class PolygonBotHandler(CommandHandler):
 
     @override
     def on_command(self, command: Command):
+        logger.info(f"Received command: {command} with id: {command._id}, body: {command.body}")
         try:
             if command._id == Command.ID.PING:
                 return self._on_ping(command)
@@ -33,11 +34,13 @@ class PolygonBotHandler(CommandHandler):
             return self.slack_client.send_message(command.channel_id, error_msg)
 
     def _on_ping(self, command: Command):
+        logger.info("getting ping status...")
         _status = ":large_green_circle:" if self.polygon_client.server_is_healthy() else ":red_circle:"
         msg = "Polygon Server Status: " + _status
         return self.slack_client.send_message(command.channel_id, msg)
 
     def _on_chart(self, command: Command):
+        logger.info("generating chart...")
         tickers = command.body["tickers"]
         candle_sticks = self.polygon_client.get_candle_sticks(
             tickers,
@@ -51,4 +54,5 @@ class PolygonBotHandler(CommandHandler):
             os.mkdir(save_dir)
         save_path = f"{save_dir}/{TimeStamp.get_ts_now(TimeStamp.DEFAULT)}.png"
         candle_sticks.plot_graph(save_path)
+        logger.info(f"graph saved @ {save_path}")
         return self.slack_client.upload_file(command.channel_id, save_path)
