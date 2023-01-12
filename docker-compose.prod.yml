@@ -1,0 +1,31 @@
+version: "3.9"
+services:
+  mosquitto:
+    restart: always
+    logging:
+      driver: "json-file"
+      options:
+        max-size: 10m
+        max-file: "5"
+
+  polygonbot:
+    image: financebot-polygonbot:${RELEASE_VERSION}
+    restart: always
+    env_file:
+      - .env
+    logging:
+      driver: "json-file"
+      options:
+        max-size: 10m
+        max-file: "5"
+
+  slackbot:
+    image: financebot-slackbot:${RELEASE_VERSION}
+    restart: always
+    env_file:
+      - .env
+    logging:
+      driver: "json-file"
+      options:
+        max-size: 10m
+        max-file: "5"
