@@ -1,3 +1,4 @@
+import os
 import argparse
 
 from utils import MQTTMessageHandler, Subscriber, Broker, broker_config, logger
@@ -8,6 +9,9 @@ class PolygonBot:
     def __init__(self, subscriber: Subscriber, data_dir: str) -> None:
         self.subscriber = subscriber
         self.data_dir = data_dir
+        if not os.path.exists(self.data_dir):
+            logger.warning(f"{self.data_dir} does not exist, creating directory...")
+            os.mkdir(self.data_dir)
 
     def start(self) -> None:
         handlers = [PolygonBotHandler(self.data_dir)]
@@ -30,8 +34,7 @@ def main(_args):
     except KeyboardInterrupt:
         logger.warning("Terminating application...")
         app.terminate()
-    except Exception as err:
-        logger.exception(err)
+
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser("PolygonBot arguments")

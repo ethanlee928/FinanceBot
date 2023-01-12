@@ -32,7 +32,7 @@ if __name__ == "__main__":
     parser.add_argument("--topic", type=str, default="pair")
     parser.add_argument("--client-id", type=str, default="slackbot-pub")
     parser.add_argument("--host", type=str, default="0.0.0.0")
-    parser.add_argument("--port", type=int, default=5001)
+    parser.add_argument("--port", type=int, default=5003)
 
     args = parser.parse_args()
     publisher = Publisher(args.client_id, Broker.from_dict(broker_config))

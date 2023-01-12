@@ -57,5 +57,9 @@ class CommandHandler(MQTTMessageHandler, ABC):
     def on_command(self, command: Command):
         pass
 
-    def _callback(self, *_):
+    def _callback(self, future, *_):
+        try:
+            logger.info(future.result())
+        except Exception as err:
+            logger.exception(err)
         logger.info("Finished on command")
