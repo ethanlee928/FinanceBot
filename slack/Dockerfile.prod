@@ -10,7 +10,7 @@ RUN getent group ${GROUP_ID} || addgroup --gid ${GROUP_ID} ${USERNAME} \
 
 RUN apt-get update
 RUN pip3 install --upgrade pip && \
-    pip3 install slackclient paho-mqtt slackeventsapi Flask overrides
+    pip3 install paho-mqtt Flask overrides slack_bolt slackclient
 
 RUN apt-get install -y --no-install-recommends tzdata
 RUN TZ=Asia/Hong_Kong \

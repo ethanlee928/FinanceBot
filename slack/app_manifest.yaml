@@ -1,0 +1,29 @@
+display_information:
+  name: # <--- input App name
+features:
+  bot_user:
+    display_name: # <--- input bot name displayed in workspace
+    always_online: false
+oauth_config:
+  scopes:
+    user:
+      - files:write
+    bot:
+      - app_mentions:read
+      - channels:history
+      - channels:manage
+      - channels:read
+      - chat:write
+      - commands
+      - files:write
+      - mpim:read
+      - im:write
+settings:
+  event_subscriptions:
+    bot_events:
+      - message.channels
+  interactivity:
+    is_enabled: true
+  org_deploy_enabled: false
+  socket_mode_enabled: true
+  token_rotation_enabled: false

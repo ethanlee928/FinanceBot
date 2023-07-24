@@ -12,6 +12,5 @@ class Event:
 
     @staticmethod
     def from_payload(payload: Dict[str, Any]) -> Event:
-        event: Dict[str, Any] = payload["event"]
-        is_bot = True if event.get("bot_id") else False
-        return Event(is_bot, event["user"], event["channel"], event.get("text", ""))
+        is_bot = True if payload.get("bot_id") else False
+        return Event(is_bot, payload["user"], payload["channel"], payload.get("text", ""))
