@@ -1,10 +1,10 @@
 from polygon import RESTClient
-import polygon.exceptions as PolygonExceptions
 
-from ..candles import CandleSticks, CandleStick
+from .candles import CandleStick, CandleSticks
+from utils.singleton import Singleton
 
 
-class PolygonClient:
+class PolygonClient(Singleton):
     def __init__(self) -> None:
         self.client = RESTClient()
 

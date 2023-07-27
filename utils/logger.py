@@ -1,8 +1,9 @@
 import os
 import logging
+from typing import Optional
 
 
-def get_logger(name):
+def get_logger(name: Optional[str] = None):
     FORMAT = "[%(name)s] %(asctime)s %(levelname)s: %(message)s"
     LEVELS = [0, 10, 20, 30, 40, 50]
     level = int(os.getenv("LOG_LEVEL", logging.INFO))

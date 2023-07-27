@@ -10,7 +10,9 @@ RUN getent group ${GROUP_ID} || addgroup --gid ${GROUP_ID} ${USERNAME} \
 
 RUN apt-get update
 RUN pip3 install --upgrade pip && \
-    pip3 install numpy paho-mqtt matplotlib mplfinance pandas overrides polygon-api-client requests
+    pip3 install numpy paho-mqtt matplotlib mplfinance \
+    pandas overrides polygon-api-client requests \
+    slack_bolt slackclient
 
 RUN apt-get install -y --no-install-recommends tzdata
 RUN TZ=Asia/Hong_Kong \
@@ -18,12 +20,4 @@ RUN TZ=Asia/Hong_Kong \
     && echo $TZ > /etc/timezone \
     && dpkg-reconfigure -f noninteractive tzdata 
 
-# Build context should be root directory
-COPY ./polygon /polygon
-COPY ./utils /polygon/utils/
-RUN mkdir /data/ && chown ${USERNAME}: /data/
-
-WORKDIR /polygon/
 USER ${USERNAME}
-
-CMD [ "python3", "-u", "main.py" ]

@@ -1,26 +1,39 @@
+from dataclasses import dataclass
 from typing import List
 from datetime import datetime
+import logging
 
 import mplfinance as mpf
 import pandas as pd
 
-from utils import logger
-from .candle_stick import CandleStick
+
+@dataclass
+class CandleStick:
+    _open: float
+    _high: float
+    _low: float
+    _close: float
+    _timestamp: int
+
+    @classmethod
+    def from_agg(cls, agg):
+        return CandleStick(agg.open, agg.high, agg.low, agg.close, agg.timestamp)
 
 
 class CandleSticks:
     def __init__(self, candle_sticks: List[CandleStick], title: str) -> None:
         self.candle_sticks = candle_sticks
         self.title = title
+        self.logger = logging.getLogger("finance.candles.CandleSticks")
 
     def plot_graph(self, save_path: str) -> bool:
         try:
             df = self.to_data_frame()
             mpf.plot(df, type="candle", title=self.title, savefig=save_path)
-            logger.info(f"{self.title} graph saved @ {save_path}")
+            self.logger.info(f"{self.title} graph saved @ {save_path}")
             return True
         except Exception as err:
-            logger.error(f"Plot klines error: {err}")
+            self.logger.error(f"Plot klines error: {err}")
             return False
 
     def to_data_frame(self) -> pd.DataFrame:
