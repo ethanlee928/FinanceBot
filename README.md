@@ -100,4 +100,4 @@ Available commands:
      | Crypto | X: | X:BTCUSD |
 
 ![Illustration](./screenshots/illustration.png)
-**Remarks**: all commands are case **insesitive**
+**Remarks**: all commands are case **insensitive**
