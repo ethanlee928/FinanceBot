@@ -5,9 +5,6 @@ export POLYGONBOT_PORT=5004
 export SLACKBOT_PORT=5003
 export MQTT_PORT=1884
 
-release_version?=
-export RELEASE_VERSION=${release_version}
-
 USERNAME?=$(shell whoami)
 USER_ID?=$(shell id -u)
 GROUP_ID?=$(shell id -g)
@@ -20,7 +17,3 @@ start:
 
 clean:
 	docker-compose -f docker-compose.yml -f docker-compose.${mode}.yml down --remove-orphans
-
-release:
-	docker build ./ -f ./polygon/Dockerfile.prod -t financebot-polygonbot:${release_version} --build-arg USERNAME=${USERNAME} --build-arg USER_ID=${USER_ID} --build-arg GROUP_ID=${GROUP_ID} && \
-	docker build ./ -f ./slack/Dockerfile.prod -t financebot-slackbot:${release_version} --build-arg USERNAME=${USERNAME} --build-arg USER_ID=${USER_ID} --build-arg GROUP_ID=${GROUP_ID}
