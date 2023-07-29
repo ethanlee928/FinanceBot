@@ -1,6 +1,6 @@
 from __future__ import annotations
 from abc import ABC, abstractmethod
-from typing import List, TypeAlias
+from typing import List, TypeAlias, Optional
 
 import paho.mqtt.client as mqtt
 from overrides import overrides
@@ -62,14 +62,15 @@ class MQTTClient(ABC):
 
 
 class Subscriber(MQTTClient):
-    def __init__(self, client_id: str, broker: Broker, topic) -> None:
+    def __init__(self, client_id: str, broker: Broker, topics: List[str], cbs: Optional[List[callable]] = None) -> None:
         super().__init__(client_id, broker)
-        self.topic = topic
-        self.handlers = []
+        self.topics = topics
+        self.cbs = cbs if cbs is not None else []
 
     @overrides
     def start(self):
-        self.client.subscribe(self.topic)
+        for topic in self.topics:
+            self.client.subscribe(topic)
         self.client.on_message = self.on_message
         self.client.loop_forever()
 
@@ -79,15 +80,10 @@ class Subscriber(MQTTClient):
         self.client.loop_stop()
 
     def on_message(self, client, udata, msg):
-        mqtt_msg = MQTTMessage(topic=self.topic, payload=msg.payload)
+        mqtt_msg = MQTTMessage(topic=msg.topic, payload=msg.payload)
         self.logger.debug(f"received payload: {mqtt_msg.payload} from topic: {mqtt_msg.topic}")
-        handler: MQTTMessageHandler
-        for handler in self.handlers:
-            handler.on_MQTTMessage(mqtt_message=mqtt_msg)
-
-    def register_handlers(self, handlers: Handlers) -> None:
-        self.logger.info("Adding handlers")
-        self.handlers = handlers
+        for cb in self.cbs:
+            cb(mqtt_msg)
 
 
 class Publisher(MQTTClient):

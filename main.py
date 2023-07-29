@@ -7,6 +7,7 @@ from slack_bolt.adapter.socket_mode import SocketModeHandler
 
 from commands import COMMAND_MAP, Command
 
+from utils import Publisher, Broker, MQTTMessage
 from utils.slack import Event
 
 
@@ -20,9 +21,11 @@ def handle_message(payload):
     if event.is_bot:
         return
     cmd, _ = Command.get_command(event)
+    if cmd not in COMMAND_MAP:
+        return logger.warning("%s is not a valid command, ignoring...", cmd)
     command: Command = COMMAND_MAP[cmd].from_event(event)
     if isinstance(command, Command):
-        command.actions()
+        publisher.publish(MQTTMessage(cmd, command.to_payload()))
 
 
 if __name__ == "__main__":
@@ -31,7 +34,9 @@ if __name__ == "__main__":
     parser.add_argument("--client-id", type=str, default="slackbot-pub")
 
     args = parser.parse_args()
+    publisher = Publisher(client_id=args.client_id, broker=Broker.from_env())
     try:
         SocketModeHandler(app, os.environ["SLACK_SOCKET_TOKEN"]).start()
     except KeyboardInterrupt:
+        publisher.stop()
         logger.warning("Stopping slackbot")

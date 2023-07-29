@@ -1,4 +1,3 @@
-from __future__ import annotations
 from typing import Dict, Any
 import os
 
@@ -10,16 +9,14 @@ class Broker:
         self.username = username
         self.password = password
 
-    @staticmethod
-    def from_dict(config: Dict[str, Any]) -> Broker:
-        return Broker(
-            host=config["host"], port=config["port"], username=config["username"], password=config["password"]
-        )
+    @classmethod
+    def from_dict(cls, config: Dict[str, Any]):
+        return cls(host=config["host"], port=config["port"], username=config["username"], password=config["password"])
 
-    @staticmethod
-    def from_env() -> Broker:
-        host = os.getenv("BROKER_HOST")
-        port = os.getenv("BROKER_PORT")
-        username = os.getenv("BROKER_USERNAME")
-        password = os.getenv("BROKER_PASSWORD")
-        return Broker(host, port, username, password)
+    @classmethod
+    def from_env(cls):
+        host = os.environ["BROKER_HOST"]
+        port = int(os.environ["BROKER_PORT"])
+        username = os.environ["BROKER_USERNAME"]
+        password = os.environ["BROKER_PASSWORD"]
+        return cls(host, port, username, password)
