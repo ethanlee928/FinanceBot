@@ -8,11 +8,10 @@ services:
         max-size: 10m
         max-file: "5"
 
-  polygonbot:
+  worker:
     image: financebot-polygonbot:${RELEASE_VERSION}
     restart: always
-    env_file:
-      - ./polygon/.env
+    command: python3 worker.py
     logging:
       driver: "json-file"
       options:
@@ -22,8 +21,7 @@ services:
   slackbot:
     image: financebot-slackbot:${RELEASE_VERSION}
     restart: always
-    env_file:
-      - ./slack/.env
+    command: python3 main.py
     logging:
       driver: "json-file"
       options:

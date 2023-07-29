@@ -1,25 +1,7 @@
 version: "3.9"
 services:
-  polygonbot:
-    image: financebot
-    build:
-      context: .
-      dockerfile: Dockerfile
-    working_dir: /app
-    volumes:
-      - ./:/app/
-    env_file:
-      - .env
+  worker:
     command: tail -f /dev/null
 
   slackbot:
-    image: financebot
-    build:
-      context: .
-      dockerfile: Dockerfile
-    working_dir: /app
-    volumes:
-      - ./:/app/
-    env_file:
-      - .env
     command: tail -f /dev/null

@@ -9,14 +9,32 @@ services:
     volumes:
       - ./mqtt/:/mosquitto/
 
-  polygonbot:
-    container_name: financebot-polygonbot
-    hostname: polygonbot
+  worker:
+    image: financebot
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: financebot-worker
+    working_dir: /app
+    volumes:
+      - ./:/app/
+    env_file:
+      - .env
+    hostname: worker
     ports:
       - ${POLYGONBOT_PORT}:${POLYGONBOT_PORT}
 
   slackbot:
+    image: financebot
+    build:
+      context: .
+      dockerfile: Dockerfile
     container_name: financebot-slackbot
+    working_dir: /app
+    volumes:
+      - ./:/app/
+    env_file:
+      - .env
     hostname: slackbot
     ports:
       - ${SLACKBOT_PORT}:${SLACKBOT_PORT}
