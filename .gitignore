@@ -5,4 +5,3 @@ __pycache__
 *venv
 password.txt
 .DS_Store
-*.png
