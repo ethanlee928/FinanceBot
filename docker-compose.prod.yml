@@ -9,7 +9,6 @@ services:
         max-file: "5"
 
   worker:
-    image: financebot-polygonbot:${RELEASE_VERSION}
     restart: always
     command: python3 worker.py
     logging:
@@ -19,7 +18,6 @@ services:
         max-file: "5"
 
   slackbot:
-    image: financebot-slackbot:${RELEASE_VERSION}
     restart: always
     command: python3 main.py
     logging:
